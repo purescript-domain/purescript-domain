@@ -10,6 +10,7 @@
   , "effect"
   , "either"
   , "foldable-traversable"
+  , "foreign-object"
   , "maybe"
   , "milkis"
   , "node-buffer"
@@ -17,7 +18,9 @@
   , "partial"
   , "prelude"
   , "psci-support"
+  , "record"
   , "strings"
+  , "transformers"
   , "tuples"
   ]
 , packages = ./packages.dhall
