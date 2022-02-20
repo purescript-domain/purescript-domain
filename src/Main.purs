@@ -90,11 +90,10 @@ main = launchAff_ do
                           Just domain
                         _ ->
                           Nothing
-
               >>=
                 either
                   (throwError <<< error)
-                  (\_ -> liftEffect $ Console.log "Success!")
+                  (\_ -> liftEffect $ Console.log "Done!")
 
   where
 

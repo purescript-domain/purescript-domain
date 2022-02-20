@@ -22,6 +22,7 @@
   , "strings"
   , "transformers"
   , "tuples"
+  , "typelevel-prelude"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]
