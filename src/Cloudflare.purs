@@ -60,7 +60,7 @@ mkClient { authEmail, authKey, zoneId } =
             (M.URL $ "https://api.cloudflare.com/client/v4/zones/" <> zoneId <> "/dns_records" <> url)
         $ Record.modify
             (Proxy :: Proxy "headers")
-            (\headers -> headers # Object.insert "x-auth-email" authEmail # Object.insert "x-auth-key" authKey)
+            (Object.insert "x-auth-email" authEmail <<< Object.insert "x-auth-key" authKey)
             opts
 
     listDomains = do
@@ -98,7 +98,7 @@ mkClient { authEmail, authKey, zoneId } =
       res <- fetch
         ""
         { method: M.postMethod
-        , headers: Object.empty
+        , headers: M.makeHeaders { "content-type": "application/json" }
         , body:
             JSON.stringify $
               encodeJson
@@ -120,7 +120,7 @@ mkClient { authEmail, authKey, zoneId } =
       res <- fetch
         ("/" <> id)
         { method: M.patchMethod
-        , headers: Object.empty
+        , headers: M.makeHeaders { "content-type": "application/json" }
         , body:
             JSON.stringify $
               encodeJson
