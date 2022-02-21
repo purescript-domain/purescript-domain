@@ -9,6 +9,7 @@ import Data.Array.Partial as Array
 import Data.Either (Either(..))
 import Data.String.Common as String
 import Data.String.Pattern (Pattern(..))
+import Data.Tuple (Tuple(..), uncurry)
 import Data.Tuple.Nested (type (/\), (/\))
 import Effect.Aff.Class (class MonadAff, liftAff)
 import Foreign.Object (Object)
@@ -16,7 +17,7 @@ import Foreign.Object as Object
 import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
 import Partial.Unsafe (unsafePartial)
-import Prim.Row (class Union)
+import Prim.Row (class Nub, class Union)
 import PurescriPT.Data.Domain (Domain, mkDomain)
 import PurescriPT.Data.Domain as Domain
 import Record as Record
@@ -47,24 +48,20 @@ mkClient
 mkClient { authEmail, authKey, zoneId } =
   let
 
-    fetch
-      :: forall sub comp
-       . Union sub comp (body :: String, credentials :: M.Credentials, follow :: Int, method :: M.Method, redirect :: M.Redirect)
+    fetchArgs
+      :: forall s a b
+       . Union a (headers :: Object String) b
+      => Nub b (headers :: Object String | s)
       => String
-      -> { method :: M.Method, headers :: Object String | sub }
-      -> m M.Response
-    fetch url opts =
-      liftAff
-        $ M.fetch
-            nodeFetch
-            (M.URL $ "https://api.cloudflare.com/client/v4/zones/" <> zoneId <> "/dns_records" <> url)
-        $ Record.modify
-            (Proxy :: Proxy "headers")
-            (Object.insert "x-auth-email" authEmail <<< Object.insert "x-auth-key" authKey)
-            opts
+      -> Record a
+      -> M.URL /\ { headers :: Object String | s }
+    fetchArgs url opts =
+      Tuple
+        ( M.URL $ "https://api.cloudflare.com/client/v4/zones/" <> zoneId <> "/dns_records" <> url )
+        $ Record.modify (Proxy :: Proxy "headers") (Object.insert "x-auth-email" authEmail <<< Object.insert "x-auth-key" authKey) $ Record.merge opts { headers: Object.empty :: Object String }
 
     listDomains = do
-      res <- fetch "?per_page=5000&type=CNAME" { method: M.getMethod, headers: Object.empty }
+      res <- liftAff $ uncurry (M.fetch nodeFetch) $ fetchArgs "?per_page=5000&type=CNAME" { method: M.getMethod }
       text <- liftAff $ M.text res
       case M.statusCode res of
         200 ->
@@ -95,20 +92,22 @@ mkClient { authEmail, authKey, zoneId } =
           throwError $ "Invalid " <> show invalid <> " response: " <> text
 
     addDomain domain = do
-      res <- fetch
-        ""
-        { method: M.postMethod
-        , headers: M.makeHeaders { "content-type": "application/json" }
-        , body:
-            JSON.stringify $
-              encodeJson
-                { type: "CNAME"
-                , name: Domain.name domain <> ".purescri.pt"
-                , content: Domain.redirect domain
-                , ttl: 1800
-                , proxied: Domain.proxy domain
-                }
-        }
+      res <- liftAff
+               $ uncurry (M.fetch nodeFetch)
+               $ fetchArgs
+                   ""
+                   { method: M.postMethod
+                   , headers: M.makeHeaders { "content-type": "application/json" }
+                   , body:
+                       JSON.stringify $
+                         encodeJson
+                           { type: "CNAME"
+                           , name: Domain.name domain <> ".purescri.pt"
+                           , content: Domain.redirect domain
+                           , ttl: 1800
+                           , proxied: Domain.proxy domain
+                           }
+                   }
       case M.statusCode res of
         200 ->
           pure domain
@@ -117,19 +116,21 @@ mkClient { authEmail, authKey, zoneId } =
           throwError $ "Invalid " <> show invalid <> " response: " <> text
 
     updateDomain id domain = do
-      res <- fetch
-        ("/" <> id)
-        { method: M.patchMethod
-        , headers: M.makeHeaders { "content-type": "application/json" }
-        , body:
-            JSON.stringify $
-              encodeJson
-                { type: "CNAME"
-                , name: Domain.name domain <> ".purescri.pt"
-                , content: Domain.redirect domain
-                , proxied: Domain.proxy domain
-                }
-        }
+      res <- liftAff
+               $ uncurry (M.fetch nodeFetch)
+               $ fetchArgs
+                  ("/" <> id)
+                  { method: M.patchMethod
+                  , headers: M.makeHeaders { "content-type": "application/json" }
+                  , body:
+                      JSON.stringify $
+                        encodeJson
+                           { type: "CNAME"
+                           , name: Domain.name domain <> ".purescri.pt"
+                           , content: Domain.redirect domain
+                           , proxied: Domain.proxy domain
+                           }
+                  }
       case M.statusCode res of
         200 ->
           pure $ id /\ domain
@@ -138,7 +139,9 @@ mkClient { authEmail, authKey, zoneId } =
           throwError $ "Invalid " <> show invalid <> " response: " <> text
 
     deleteDomain id domain = do
-      res <- fetch ("/" <> id) { method: M.deleteMethod, headers: Object.empty }
+      res <- liftAff
+               $ uncurry (M.fetch nodeFetch)
+               $ fetchArgs ("/" <> id) { method: M.deleteMethod }
       case M.statusCode res of
         200 ->
           pure $ id /\ domain
