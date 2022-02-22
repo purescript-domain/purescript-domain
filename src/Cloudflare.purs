@@ -167,7 +167,7 @@ mkClient { authEmail, authKey, zoneId } =
           pure $ id /\ domain
         invalid -> do
           text <- liftAff $ M.text res
-          throwError $ Error $ UpdateOp id domain /\ UnexpectedStatus invalid text 
+          throwError $ Error $ UpdateOp id domain /\ UnexpectedStatus invalid text
 
     deleteDomain id = do
       res <- liftAff

@@ -8,7 +8,7 @@ import Data.Argonaut (JsonDecodeError, decodeJson, parseJson, printJsonDecodeErr
 import Data.Array as Array
 import Data.Either (Either(..), either)
 import Data.Foldable (lookup)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), isNothing)
 import Data.Traversable (for_, traverse, traverse_)
 import Data.Tuple.Nested ((/\))
 import Dotenv as Dotenv
@@ -86,11 +86,8 @@ main = launchAff_ do
                 $ Array.catMaybes
                 $ domains
                     <#> \domain ->
-                      case Array.find (\(_ /\ x) -> Domain.name x == Domain.name domain) existingRecords of
-                        Nothing ->
-                          Just domain
-                        _ ->
-                          Nothing
+                      if isNothing $ Array.find (\(_ /\ x) -> Domain.name x == Domain.name domain) existingRecords then Just domain
+                      else Nothing
               >>=
                 either
                   (throwError <<< error <<< Cloudflare.printError)
