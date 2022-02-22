@@ -19,6 +19,7 @@ import Effect.Console as Console
 import Node.Encoding (Encoding(..))
 import Node.FS.Aff (readTextFile)
 import PurescriPT.Cloudflare as CF
+import PurescriPT.Cloudflare as Cloudflare
 import PurescriPT.Data.Domain (Domain)
 import PurescriPT.Data.Domain as Domain
 
@@ -59,28 +60,28 @@ main = launchAff_ do
                 in
                   case matchingRecord of
                     Nothing -> do
-                      result <- try $ deleteDomain id domain
+                      result <- try $ deleteDomain id
                       liftEffect $ case result of
                         Left e ->
-                          Console.error $ "Failed delete: " <> e
+                          Console.error $ Cloudflare.printError e
                         Right _ ->
-                          Console.info $ "Successful delete: " <> show domain <> " with id " <> id
+                          Console.info $ "Deleted: " <> show domain <> " with id " <> id
                     Just record ->
                       when (domain /= record) do
                         result <- try $ updateDomain id record
                         liftEffect $ case result of
                           Left e ->
-                            Console.error $ "Failed update: " <> e
+                            Console.error $ Cloudflare.printError e
                           Right _ ->
-                            Console.info $ "Successful update: " <> show domain <> " with id " <> id
+                            Console.info $ "Updated: " <> show domain <> " with id " <> id
 
               traverse_
                 ( addDomain >>> try
                     >=> liftEffect <<< case _ of
                       Left e ->
-                        Console.error $ "Failed add: " <> e
+                        Console.error $ Cloudflare.printError e
                       Right domain ->
-                        Console.info $ "Successful add: " <> show domain
+                        Console.info $ "Added: " <> show domain
                 )
                 $ Array.catMaybes
                 $ domains
@@ -92,7 +93,7 @@ main = launchAff_ do
                           Nothing
               >>=
                 either
-                  (throwError <<< error)
+                  (throwError <<< error <<< Cloudflare.printError)
                   (\_ -> liftEffect $ Console.log "Done!")
 
   where

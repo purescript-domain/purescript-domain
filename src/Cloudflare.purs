@@ -3,7 +3,7 @@ module PurescriPT.Cloudflare where
 import Prelude
 
 import Control.Monad.Error.Class (class MonadError, throwError)
-import Data.Argonaut (decodeJson, encodeJson, parseJson, printJsonDecodeError)
+import Data.Argonaut (JsonDecodeError, decodeJson, encodeJson, parseJson, printJsonDecodeError)
 import Data.Argonaut as JSON
 import Data.Array.Partial as Array
 import Data.Either (Either(..))
@@ -32,16 +32,46 @@ type Credentials r =
 
 type Id = String
 
+data Operation = ListOp | AddOp Domain | UpdateOp Id Domain | DeleteOp Id
+
+data ErrorType
+  = UnexpectedStatus Int String
+  | UnexpectedContent JsonDecodeError String
+
+newtype Error = Error (Operation /\ ErrorType)
+
+printError :: Error -> String
+printError (Error (op /\ ty)) =
+  let
+    general =
+      case op of
+        ListOp ->
+          "Failed to list domains"
+        AddOp domain ->
+          "Failed to add " <> show domain
+        UpdateOp id new ->
+          "Failed to update domain with id " <> id <> " to " <> show new
+        DeleteOp id ->
+          "Failed to delete domain with id " <> id
+    details =
+      case ty of
+        UnexpectedStatus status content ->
+          "Expected a 200 status, but received " <> show status <> " with the following content: " <> content
+        UnexpectedContent decodeError content ->
+          "An error occurred while decoding the response body. " <> printJsonDecodeError decodeError <> " Content received: " <> content
+  in
+    general <> ". " <> details
+
 type Client m =
   { listDomains :: m (Array (Id /\ Domain))
   , addDomain :: Domain -> m Domain
   , updateDomain :: Id -> Domain -> m (Id /\ Domain)
-  , deleteDomain :: Id -> Domain -> m (Id /\ Domain)
+  , deleteDomain :: Id -> m Id
   }
 
 mkClient
   :: forall r m
-   . MonadError String m
+   . MonadError Error m
   => MonadAff m
   => Credentials r
   -> Client m
@@ -68,7 +98,7 @@ mkClient { authEmail, authKey, zoneId } =
         200 ->
           case parseJson text >>= decodeJson of
             Left error ->
-              throwError $ "Unexpected response format. " <> printJsonDecodeError error
+              throwError $ Error $ ListOp /\ UnexpectedContent error text
             Right
               ( { result: rs }
                   ::
@@ -90,7 +120,7 @@ mkClient { authEmail, authKey, zoneId } =
                         in
                           r.id /\ mkDomain name r.content { proxy: r.proxied }
         invalid ->
-          throwError $ "Invalid " <> show invalid <> " response: " <> text
+          throwError $ Error $ ListOp /\ UnexpectedStatus invalid text
 
     addDomain domain = do
       res <- liftAff
@@ -114,7 +144,7 @@ mkClient { authEmail, authKey, zoneId } =
           pure domain
         invalid -> do
           text <- liftAff $ M.text res
-          throwError $ "Invalid " <> show invalid <> " response: " <> text
+          throwError $ Error $ AddOp domain /\ UnexpectedStatus invalid text
 
     updateDomain id domain = do
       res <- liftAff
@@ -137,18 +167,18 @@ mkClient { authEmail, authKey, zoneId } =
           pure $ id /\ domain
         invalid -> do
           text <- liftAff $ M.text res
-          throwError $ "Invalid " <> show invalid <> " response: " <> text
+          throwError $ Error $ UpdateOp id domain /\ UnexpectedStatus invalid text 
 
-    deleteDomain id domain = do
+    deleteDomain id = do
       res <- liftAff
         $ uncurry (M.fetch nodeFetch)
         $ fetchArgs ("/" <> id) { method: M.deleteMethod }
       case M.statusCode res of
         200 ->
-          pure $ id /\ domain
+          pure id
         invalid -> do
           text <- liftAff $ M.text res
-          throwError $ "Invalid " <> show invalid <> " response: " <> text
+          throwError $ Error $ DeleteOp id /\ UnexpectedStatus invalid text
 
   in
     { listDomains, addDomain, updateDomain, deleteDomain }
