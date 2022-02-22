@@ -1,3 +1,2 @@
-[ [ "www", "purescri.pt" ]
-, [ "halogen-headless", "nsaunders.github.io", { "proxy": false } ]
+[ [ "halogen-headless", "nsaunders.github.io" ]
 ]
