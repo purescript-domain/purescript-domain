@@ -1,10 +1,10 @@
-name: dns changes
+name: dns
 on:
   push:
     paths:
       - "domains.json"
 jobs:
-  run:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
