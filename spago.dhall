@@ -15,6 +15,7 @@
   , "milkis"
   , "node-buffer"
   , "node-fs-aff"
+  , "node-process"
   , "partial"
   , "prelude"
   , "psci-support"

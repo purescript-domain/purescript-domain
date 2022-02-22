@@ -7,7 +7,6 @@ import Control.Monad.Except (runExceptT)
 import Data.Argonaut (JsonDecodeError, decodeJson, parseJson, printJsonDecodeError)
 import Data.Array as Array
 import Data.Either (Either(..), either)
-import Data.Foldable (lookup)
 import Data.Maybe (Maybe(..), isNothing)
 import Data.Traversable (for_, traverse, traverse_)
 import Data.Tuple.Nested ((/\))
@@ -16,8 +15,10 @@ import Effect (Effect)
 import Effect.Aff (error, launchAff_, throwError)
 import Effect.Class (liftEffect)
 import Effect.Console as Console
+import Foreign.Object as Object
 import Node.Encoding (Encoding(..))
 import Node.FS.Aff (readTextFile)
+import Node.Process (getEnv)
 import PurescriPT.Cloudflare as CF
 import PurescriPT.Cloudflare as Cloudflare
 import PurescriPT.Data.Domain (Domain)
@@ -25,14 +26,16 @@ import PurescriPT.Data.Domain as Domain
 
 main :: Effect Unit
 main = launchAff_ do
-  env <- Dotenv.loadFile
+  _ <- Dotenv.loadFile
+
+  env <- liftEffect getEnv
 
   let
     maybeCredentials =
       (\authEmail authKey zoneId -> { authEmail, authKey, zoneId })
-        <$> join (lookup "CLOUDFLARE_AUTH_EMAIL" env)
-        <*> join (lookup "CLOUDFLARE_AUTH_KEY" env)
-        <*> join (lookup "CLOUDFLARE_ZONE_ID" env)
+        <$> Object.lookup "CLOUDFLARE_AUTH_EMAIL" env
+        <*> Object.lookup "CLOUDFLARE_AUTH_KEY" env
+        <*> Object.lookup "CLOUDFLARE_ZONE_ID" env
 
   case maybeCredentials of
     Nothing ->
