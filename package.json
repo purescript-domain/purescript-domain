@@ -3,7 +3,8 @@
   "scripts": {
     "build": "spago build",
     "format": "purs-tidy format-in-place src/**/*.purs",
-    "postinstall": "spago install"
+    "postinstall": "spago install",
+    "start": "spago run"
   },
   "devDependencies": {
     "purs-tidy": "^0.7.0"
