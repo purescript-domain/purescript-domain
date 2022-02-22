@@ -18,7 +18,6 @@
   , "node-process"
   , "partial"
   , "prelude"
-  , "psci-support"
   , "record"
   , "strings"
   , "transformers"
