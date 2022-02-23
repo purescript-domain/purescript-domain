@@ -1,4 +1,4 @@
-{ name = "purescri.pt"
+{ name = "purescri-pt-dns"
 , dependencies =
   [ "aff"
   , "argonaut"

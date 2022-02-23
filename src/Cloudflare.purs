@@ -1,4 +1,4 @@
-module PurescriPT.Cloudflare where
+module PurescriPT.DNS.Cloudflare where
 
 import Prelude
 
@@ -18,8 +18,8 @@ import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
 import Partial.Unsafe (unsafePartial)
 import Prim.Row (class Nub, class Union)
-import PurescriPT.Data.Domain (Domain, mkDomain)
-import PurescriPT.Data.Domain as Domain
+import PurescriPT.DNS.Domain (Domain, mkDomain)
+import PurescriPT.DNS.Domain as Domain
 import Record as Record
 import Type.Prelude (Proxy(..))
 

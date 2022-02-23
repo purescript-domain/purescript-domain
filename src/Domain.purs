@@ -1,4 +1,4 @@
-module PurescriPT.Data.Domain where
+module PurescriPT.DNS.Domain where
 
 import Prelude
 import Control.Alt ((<|>))
