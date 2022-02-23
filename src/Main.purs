@@ -20,7 +20,6 @@ import Node.Encoding (Encoding(..))
 import Node.FS.Aff (readTextFile)
 import Node.Process (getEnv)
 import PurescriPT.Cloudflare as CF
-import PurescriPT.Cloudflare as Cloudflare
 import PurescriPT.Data.Domain (Domain)
 import PurescriPT.Data.Domain as Domain
 
@@ -66,7 +65,7 @@ main = launchAff_ do
                       result <- try $ deleteDomain id
                       liftEffect $ case result of
                         Left e ->
-                          Console.error $ Cloudflare.printError e
+                          Console.error $ CF.printError e
                         Right _ ->
                           Console.info $ "Deleted: " <> show domain <> " with id " <> id
                     Just record ->
@@ -74,7 +73,7 @@ main = launchAff_ do
                         result <- try $ updateDomain id record
                         liftEffect $ case result of
                           Left e ->
-                            Console.error $ Cloudflare.printError e
+                            Console.error $ CF.printError e
                           Right _ ->
                             Console.info $ "Updated: " <> show domain <> " with id " <> id
 
@@ -82,7 +81,7 @@ main = launchAff_ do
                 ( addDomain >>> try
                     >=> liftEffect <<< case _ of
                       Left e ->
-                        Console.error $ Cloudflare.printError e
+                        Console.error $ CF.printError e
                       Right domain ->
                         Console.info $ "Added: " <> show domain
                 )
@@ -93,7 +92,7 @@ main = launchAff_ do
                       else Nothing
               >>=
                 either
-                  (throwError <<< error <<< Cloudflare.printError)
+                  (throwError <<< error <<< CF.printError)
                   (\_ -> liftEffect $ Console.log "Done!")
 
   where
