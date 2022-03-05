@@ -1,4 +1,4 @@
-module PurescriPT.DNS.Main where
+module Domains.DNS.Main where
 
 import Prelude
 
@@ -19,9 +19,9 @@ import Foreign.Object as Object
 import Node.Encoding (Encoding(..))
 import Node.FS.Aff (readTextFile)
 import Node.Process (getEnv)
-import PurescriPT.DNS.Cloudflare as CF
-import PurescriPT.DNS.Domain (Domain)
-import PurescriPT.DNS.Domain as Domain
+import Domains.DNS.Cloudflare as CF
+import Domains.DNS.Domain (Domain)
+import Domains.DNS.Domain as Domain
 
 main :: Effect Unit
 main = launchAff_ do
