@@ -21,4 +21,4 @@ jobs:
         uses: actions/setup-node@v2
       - if: steps.cache-deps.outputs.cache-hit != 'true'
         run: npm install
-      - run: npm checkFormat
+      - run: npm run checkFormat
