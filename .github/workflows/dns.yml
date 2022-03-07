@@ -1,6 +1,8 @@
 name: dns
 on:
   push:
+    branches:
+      - main
     paths:
       - "domains.yml"
 jobs:
