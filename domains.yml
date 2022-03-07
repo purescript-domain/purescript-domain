@@ -20,6 +20,8 @@
 # 2. Adding an extra blank line between each entry
 #
 
+css : purescript-contrib.github.io
+
 halogen-headless: nsaunders.github.io
 
 www: purescri.pt
