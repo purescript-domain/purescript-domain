@@ -1,0 +1,25 @@
+#
+# PureScript Domains registry
+#
+# To register your domain, simply add it to the list below and submit a pull
+# request.
+#
+# Most of the time, you should configure your domain in the following format:
+#
+#   foobar: foobar.github.io
+#
+# CloudFlare provides additional security and performance features by default.
+# To disable these and use DNS only, use the advanced configuration format:
+#
+#   foobar:
+#     redirect: foobar.github.io
+#     proxy: false
+#
+# Please help us keep this file easy to navigate by:
+# 1. Maintaining alphabetical order
+# 2. Adding an extra blank line between each entry
+#
+
+halogen-headless: nsaunders.github.io
+
+www: purescri.pt

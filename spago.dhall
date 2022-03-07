@@ -10,6 +10,7 @@
   , "effect"
   , "either"
   , "foldable-traversable"
+  , "foreign"
   , "foreign-object"
   , "maybe"
   , "milkis"
@@ -23,6 +24,7 @@
   , "transformers"
   , "tuples"
   , "typelevel-prelude"
+  , "yaml-next"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]

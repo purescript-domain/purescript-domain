@@ -2,7 +2,7 @@ name: dns
 on:
   push:
     paths:
-      - "domains.json"
+      - "domains.yml"
 jobs:
   update:
     runs-on: ubuntu-latest

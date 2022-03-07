@@ -101,15 +101,14 @@ mkClient { authEmail, authKey, zoneId } =
               throwError $ Error $ ListOp /\ UnexpectedContent error text
             Right
               ( { result: rs }
-                  ::
-                       { result ::
-                           Array
-                             { id :: String
-                             , name :: String
-                             , content :: String
-                             , proxied :: Boolean
-                             }
-                       }
+                  :: { result ::
+                         Array
+                           { id :: String
+                           , name :: String
+                           , content :: String
+                           , proxied :: Boolean
+                           }
+                     }
               ) ->
               pure
                 $ rs
