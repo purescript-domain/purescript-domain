@@ -1,0 +1,24 @@
+name: ci
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: cache deps
+        id: cache-deps
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/*.dhall') }}
+          path: |
+            node_modules
+            .spago
+            output
+      - name: node setup
+        uses: actions/setup-node@v2
+      - if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm install
+      - run: npm checkFormat
