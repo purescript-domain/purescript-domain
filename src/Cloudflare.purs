@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.Error.Class (class MonadError, throwError)
 import Data.Argonaut (JsonDecodeError, decodeJson, encodeJson, parseJson, printJsonDecodeError)
 import Data.Argonaut as JSON
+import Data.Array (filter)
 import Data.Array.Partial as Array
 import Data.Either (Either(..))
 import Data.String.Common as String
@@ -112,6 +113,7 @@ mkClient { authEmail, authKey, zoneId } =
               ) ->
               pure
                 $ rs
+                    # filter (not <<< eq "purescri.pt" <<< _.name)
                     <#>
                       \r ->
                         let
