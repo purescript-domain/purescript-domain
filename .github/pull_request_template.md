@@ -1,0 +1,1 @@
+- [ ] I have read and acknowledge the [Terms of Service](https://purescri.pt/#/terms).
