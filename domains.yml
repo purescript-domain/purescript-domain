@@ -4,7 +4,7 @@
 # To register your domain, simply add it to the list below and submit a pull
 # request.
 #
-# Most of the time, you should configure your domain in the following format,
+# Most of the time, you should configure your subdomain in the following format,
 # where "foo" is the subdomain name (as in "foo.purescri.pt") and "bar" is your
 # GitHub username or organization name:
 #
