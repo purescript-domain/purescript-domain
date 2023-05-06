@@ -1,0 +1,16 @@
+package:
+  name: updater
+  run:
+    main: Domain.Updater
+  dependencies:
+    - aff
+    - argonaut
+    - common
+    - console
+    - either
+    - filterable
+    - foreign-object
+    - node-process
+    - prelude
+    - registry-lib
+    - strings

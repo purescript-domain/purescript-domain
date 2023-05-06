@@ -1,0 +1,5 @@
+package:
+  name: sites
+  dependencies:
+    - argonaut
+    - foreign-object

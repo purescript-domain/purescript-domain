@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "@purescript-domain/updater",
+  "dependencies": {
+    "@purescript-domain/common": "file:../common",
+    "gunzip-maybe": "^1.4.2",
+    "js-yaml": "^4.1.0",
+    "tar-stream": "^3.0.0"
+  }
+}

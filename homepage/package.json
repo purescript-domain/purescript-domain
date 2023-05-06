@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "@purescript-domain/homepage",
+  "scripts": {
+    "build": "node -e \"import('execa').then(({ execa }) => execa('spago', ['build', '-p', 'homepage'], { cwd: require('path').resolve(process.cwd(), '..') })).then(({ stdout }) => process.stdout.write(stdout)).catch(({ stdout, stderr, exitCode }) => { process.stdout.write(stdout); process.stderr.write(stderr); process.exit(exitCode); })\"",
+    "bundle": "$npm_execpath run build && $npm_execpath run bundle:ci",
+    "bundle:ci": "webpack --env pursOutputPath=$(pwd)/../output",
+    "start": "$npm_execpath run build && concurrently \"webpack-dev-server -- --env pursOutputPath=$(pwd)/../output\" \"watchexec -e purs -w src '$npm_execpath run build'\""
+  },
+  "dependencies": {
+    "@purescript-domain/sites": "file:../sites"
+  },
+  "devDependencies": {
+    "browserslist": "^4.21.5",
+    "concurrently": "^8.0.1",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "execa": "^7.1.1",
+    "execute-module-loader": "^1.0.0",
+    "favicons-webpack-plugin": "^6.0.0",
+    "html-webpack-plugin": "^5.5.1",
+    "lightningcss": "^1.20.0",
+    "lightningcss-loader": "^2.1.0",
+    "marked": "^4.3.0",
+    "mini-css-extract-plugin": "^2.7.5",
+    "string-replace-loader": "^3.1.0",
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.3"
+  }
+}

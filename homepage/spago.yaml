@@ -1,0 +1,15 @@
+package:
+  name: homepage
+  dependencies:
+    - halogen
+    - halogen-hooks
+    - halogen-subscriptions
+    - routing
+    - routing-duplex
+    - sites
+    - tecton
+    - tecton-halogen
+    - unique
+    - web-events
+    - web-resize-observer
+    - web-uievents

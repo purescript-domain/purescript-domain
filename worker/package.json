@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "@purescript-domain/worker",
+  "dependencies": {
+    "@purescript-domain/cloudflare-workers": "file:../cloudflare-workers",
+    "@purescript-domain/common": "file:../common",
+    "@purescript-domain/sites": "file:../sites"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@purescript-domain/root",
+  "workspaces": [
+    "cloudflare-workers",
+    "common",
+    "homepage",
+    "sites",
+    "updater",
+    "worker"
+  ]
+}

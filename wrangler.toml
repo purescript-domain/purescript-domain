@@ -1,0 +1,8 @@
+name = "purescript-domain"
+main = "index.js"
+compatibility_date = "2023-04-12"
+
+route = { pattern = "purescri.pt/*", zone_name = "purescri.pt" }
+
+[vars]
+DOMAIN_SITE = "https://purescript-domains.github.io/site"

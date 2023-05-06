@@ -1,0 +1,1 @@
+export const markdownContent = "# How it works";

@@ -1,0 +1,14 @@
+package:
+  name: worker
+  dependencies:
+    - argonaut
+    - cloudflare-workers
+    - common
+    - js-promise-aff
+    - sites
+    - strings
+    - typedenv
+  test:
+    main: Test.Worker
+    dependencies:
+      - spec

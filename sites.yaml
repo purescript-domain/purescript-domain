@@ -1,0 +1,12 @@
+chosen:
+  disable:
+halogen-headless:
+  mask: https://nsaunders.github.io/purescript-halogen-headless
+registry:
+  redirect: https://github.com/purescript/registry
+spago:
+  redirect: https://github.com/purescript/spago
+tagless-d3:
+  redirect: https://afcondon.github.io/purescript-d3-tagless-II
+tecton:
+  mask: https://nsaunders.github.io/purescript-tecton

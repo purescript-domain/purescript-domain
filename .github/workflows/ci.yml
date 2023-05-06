@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "30 4 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Use Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+
+      - name: Install PureScript tooling
+        run: npm install -g purescript@0.15.8 spago@0.93.1 esbuild@0.13.12
+
+      - name: Cache PureScript dependencies
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-spago-${{ hashFiles('spago.yaml', 'cloudflare-workers/spago.yaml', 'common/spago.yaml', 'homepage/spago.yaml', 'sites/spago.yaml', 'updater/spago.yaml', 'worker/spago.yaml') }}
+          path: |
+            .spago
+            output
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          path: node_modules
+
+      - name: Install PureScript dependencies
+        run: spago install
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build packages
+        run: spago build
+      
+      - name: Run tests
+        run: spago test
+
+      - name: Update site list
+        run: spago run -p updater -- -o sites/src/Sites.js
+
+      - name: Bundle worker
+        run: |
+          spago bundle -p worker --module Domain.Worker --type module
+          echo "import { fetch } from './worker'; export default { fetch };" | esbuild --bundle --platform=neutral --target=es2020 --outfile=index.js
+
+      - name: Publish worker
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Build homepage
+        run: npm run bundle:ci --workspace=homepage -- --env production --env url=https://purescri.pt
+      
+      - name: Publish homepage
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./homepage/public

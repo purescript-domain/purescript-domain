@@ -1,0 +1,1 @@
+export const markdownContent = "# Terms and Conditions";
