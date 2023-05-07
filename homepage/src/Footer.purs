@@ -70,13 +70,13 @@ useFooter route =
                       ]
                       [ HH.text "Terms and Conditions" ]
               , HH.a
-                  [ HP.href "https://github.com/purescript-domains"
+                  [ HP.href "https://github.com/purescript-domain"
                   , HP.target "_blank"
                   , HP.class_ Link.block
                   ]
                   [ HH.text "GitHub" ]
               , HH.a
-                  [ HP.href "https://twitter.com/pursdomains"
+                  [ HP.href "https://twitter.com/pursdomain"
                   , HP.target "_blank"
                   , HP.class_ Link.block
                   ]
