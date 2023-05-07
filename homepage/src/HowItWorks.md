@@ -14,11 +14,11 @@ Whether you recently published your library or already have your _purescri.pt_ U
 * You can change the redirect URL to something other than your GitHub repository, such as a [GitHub Pages](https://pages.github.com/) site.
 * You can mask the original URL so that your _purescri.pt_ URL remains in the browser's address bar.
 
-To make changes, [submit a pull request](https://github.com/purescript-domains/purescript-domain/edit/master/sites.yaml).
+To make changes, [submit a pull request](https://github.com/purescript-domain/purescript-domain/edit/main/sites.yaml).
 
 ### Other resources
 
-We also offer _purescri.pt_ URLs for community resources and unpublished libraries on a limited basis. For example, you can access the PureScript Registry via https://purescri.pt/registry. If you are interested in obtaining a _purescri.pt_ URL in such a case, please [open an issue](https://github.com/purescript-domains/purescript-domain/issues/new) to discuss eligibility.
+We also offer _purescri.pt_ URLs for community resources and unpublished libraries on a limited basis. For example, you can access the PureScript Registry via https://purescri.pt/registry. If you are interested in obtaining a _purescri.pt_ URL in such a case, please [open an issue](https://github.com/purescript-domain/purescript-domain/issues/new) to discuss eligibility.
 
 ## That's it.
 
