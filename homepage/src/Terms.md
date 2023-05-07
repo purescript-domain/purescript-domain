@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The PureScript Domain is a free vanity URL service (the "Service") owned and operated by Nicholas Saunders (hereafter "we", "our", or "us"). A URL path name (the "Site") is automatically created for each package registered in the [PureScript Registry](https://github.com/purescript/registry), consisting of the package name and redirecting to the corresponding GitHub repository. A secondary registration method is via [pull request](https://github.com/purescript-domains/purescript-domain/edit/master/sites.yaml) to the _purescript-domain_ GitHub repository. Use of the Service, whether by active promotion of the Site or through explicit participation via pull request, is subject to your acknowledgment and acceptance of these Terms and Conditions (hereafter the "Agreement").
+The PureScript Domain is a free vanity URL service (the "Service") owned and operated by Nicholas Saunders (hereafter "we", "our", or "us"). A URL path name (the "Site") is automatically created for each package registered in the [PureScript Registry](https://github.com/purescript/registry), consisting of the package name and redirecting to the corresponding GitHub repository. A secondary registration method is via [pull request](https://github.com/purescript-domain/purescript-domain/edit/main/sites.yaml) to the _purescript-domain_ GitHub repository. Use of the Service, whether by active promotion of the Site or through explicit participation via pull request, is subject to your acknowledgment and acceptance of these Terms and Conditions (hereafter the "Agreement").
 
 ## Rights and responsibilities
 
@@ -20,7 +20,7 @@ Content that is illegal, obscene, indecent, or defamatory; incites racial or eth
 
 ## Termination
 
-You may disable your Site at any time by submitting a [pull request](https://github.com/purescript-domains/purescript-domain/edit/master/sites.yaml).
+You may disable your Site at any time by submitting a [pull request](https://github.com/purescript-domain/purescript-domain/edit/main/sites.yaml).
 
 ## Name Policy
 
