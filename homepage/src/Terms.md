@@ -49,7 +49,7 @@ You agree to and waive any objections to personal jurisdiction of and venue in t
 
 ## Changes to the Agreement
 
-We reserve the right to alter the Agreement at any time, at our sole discretion, without notice. You may return to this page periodically to review the current version of the Agreement or [monitor commit history](https://github.com/purescript-domains/purescript-domain/commits/master/homepage/src/Terms.md) on GitHub.
+We reserve the right to alter the Agreement at any time, at our sole discretion, without notice. You may return to this page periodically to review the current version of the Agreement or [monitor commit history](https://github.com/purescript-domain/purescript-domain/commits/main/homepage/src/Terms.md) on GitHub.
 
 Continued use of the Service after changes to the Agreement indicates that you are bound by those changes. However, you can discontinue your use of the Service as described above.
 
