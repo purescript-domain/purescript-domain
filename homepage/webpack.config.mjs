@@ -61,6 +61,8 @@ export default ({ pursOutputPath, production, url = "" }) => ({
       meta: {
         viewport: "width=device-width, initial-scale=1",
         description,
+        "twitter:card": "summary_large_image",
+        "twitter:description": description,
         ...openGraph({
           title,
           description,
