@@ -291,7 +291,7 @@ useSearchBox =
       let narrow = formBox.width < 2.5 * logoBox.width
 
       Hooks.pure $
-        HH.div
+        HH.label
           ( [ HP.classes $ block :
                 if narrow then [ blockNarrowModifier ] else []
             ] <> catMaybes [ HP.ref <$> formRefLabel ]
