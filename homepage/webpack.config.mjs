@@ -78,7 +78,7 @@ export default ({ pursOutputPath, production, url = "" }) => ({
           <html>
             <head>
               <meta charset="utf-8">
-              ${headTags.replace(/></g, ">\n<")}
+              ${headTags.reduce((a, b) => a.length ? [...a, "\n", b] : [b], [])}
               <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
               <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat|Inconsolata|Roboto">
               <title>${title}</title>
