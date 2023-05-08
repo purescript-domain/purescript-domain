@@ -57,13 +57,11 @@ export default ({ pursOutputPath, production, url = "" }) => ({
     }),
     new HtmlPlugin({
       inject: false,
-      minify: false,
       title,
       meta: {
         viewport: "width=device-width, initial-scale=1",
         description,
         "twitter:card": "summary_large_image",
-        "twitter:image": `${url || "."}/banner.png`,
         "twitter:description": description,
         ...openGraph({
           title,
@@ -78,7 +76,7 @@ export default ({ pursOutputPath, production, url = "" }) => ({
           <html>
             <head>
               <meta charset="utf-8">
-              ${headTags.reduce((a, b) => a.length ? [...a, "\n", b] : [b], [])}
+              ${headTags}
               <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
               <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat|Inconsolata|Roboto">
               <title>${title}</title>
