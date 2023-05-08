@@ -13,6 +13,7 @@ import Domain.Homepage.Footer (useFooter)
 import Domain.Homepage.Header (useHeader)
 import Domain.Homepage.Home as Home
 import Domain.Homepage.HowItWorks as HowItWorks
+import Domain.Homepage.NotFound as NotFound
 import Domain.Homepage.Route (Route)
 import Domain.Homepage.Route as Route
 import Domain.Homepage.Terms as Terms
@@ -96,17 +97,24 @@ css = do
 
 data Query a = Navigate (Maybe Route) a
 
-type Slots =
-  ( home :: forall q. H.Slot q Void Unit
-  , howItWorks :: forall q. H.Slot q Void Unit
-  , terms :: forall q. H.Slot q Void Unit
+type SimpleSlot = forall q. H.Slot q Void Unit
+
+type Slots' a =
+  ( home :: a
+  , howItWorks :: a
+  , terms :: a
+  , notFound :: a
   )
+
+type Slots = Slots' SimpleSlot
 
 _home = Proxy :: Proxy "home"
 
 _howItWorks = Proxy :: Proxy "howItWorks"
 
 _terms = Proxy :: Proxy "terms"
+
+_notFound = Proxy :: Proxy "notFound"
 
 component :: forall i o m. MonadEffect m => H.Component Query i o m
 component =
@@ -131,7 +139,7 @@ component =
                 Just Route.Terms ->
                   HH.slot_ _terms unit Terms.component unit
                 _ ->
-                  HH.div_ [ HH.text "???" ]
+                  HH.slot_ _notFound unit NotFound.component unit
             ]
         , HH.div [ HP.class_ footerWrapElement ] [ footer ]
         , HH.div [ HP.class_ verticalSpacerElement ] [ HH.text " " ]

@@ -10,7 +10,7 @@ import browserslist from "browserslist";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const title = "purescri.pt";
+const title = "PureScript Domain";
 const description = "Free vanity URLs for PureScript libraries and community resources";
 
 function openGraph(tags) {
@@ -34,7 +34,7 @@ export default ({ pursOutputPath, production, url = "" }) => ({
   },
   resolve: {
     alias: Object.fromEntries(
-      ["HowItWorks", "Terms"].map(x => [
+      ["HowItWorks", "Terms", "NotFound"].map(x => [
         path.join(pursOutputPath, `Domain.Homepage.${x}`, "foreign.js"),
         path.resolve(__dirname, "src", `${x}.md`),
       ])
@@ -69,17 +69,18 @@ export default ({ pursOutputPath, production, url = "" }) => ({
           site_name: "PureScript Domain",
         }),
       },
-      templateContent({ htmlWebpackPlugin }) {
+      templateContent({ htmlWebpackPlugin: { tags: { headTags, bodyTags }, options: { title } } }) {
         return `
           <html>
             <head>
+              <title>${title}</title>
               <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
               <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat|Inconsolata|Roboto">
               <meta charset="utf-8">
-              ${htmlWebpackPlugin.tags.headTags}
+              ${headTags}
             </head>
             <body>
-              ${htmlWebpackPlugin.tags.bodyTags}
+              ${bodyTags}
             </body>
           </html>
         `;
