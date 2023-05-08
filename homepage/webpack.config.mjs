@@ -63,6 +63,7 @@ export default ({ pursOutputPath, production, url = "" }) => ({
         viewport: "width=device-width, initial-scale=1",
         description,
         "twitter:card": "summary_large_image",
+        "twitter:image": `${url || "."}/banner.png`,
         "twitter:description": description,
         ...openGraph({
           title,
@@ -76,11 +77,11 @@ export default ({ pursOutputPath, production, url = "" }) => ({
         return `
           <html>
             <head>
-              <title>${title}</title>
+              <meta charset="utf-8">
+              ${headTags.replace(/></g, ">\n<")}
               <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
               <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat|Inconsolata|Roboto">
-              <meta charset="utf-8">
-              ${headTags}
+              <title>${title}</title>
             </head>
             <body>
               ${bodyTags}
