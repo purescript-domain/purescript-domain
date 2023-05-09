@@ -12,3 +12,5 @@ tagless-d3:
   mask: https://afcondon.github.io/purescript-d3-tagless-II
 tecton:
   mask: https://nsaunders.github.io/purescript-tecton
+tidy:
+  redirect: https://github.com/natefaubion/purescript-tidy
