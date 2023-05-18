@@ -14,3 +14,5 @@ tecton:
   mask: https://nsaunders.github.io/purescript-tecton
 tidy:
   redirect: https://github.com/natefaubion/purescript-tidy
+web:
+  redirect: https://github.com/purescript-web
